@@ -33,6 +33,9 @@ namespace Yesla.Data
         }
 
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Trip> Trips { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
+        public DbSet<Car> Cars { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -54,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TripBuy.cs" />
+    <Compile Include="TripDetails.cs" />
     <Compile Include="TripListItem.cs" />
   </ItemGroup>
   <ItemGroup>

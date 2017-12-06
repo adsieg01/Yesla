@@ -196,12 +196,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\201712061757321_InitialMigration.cs" />
-    <Compile Include="Migrations\201712061757321_InitialMigration.Designer.cs">
-      <DependentUpon>201712061757321_InitialMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -297,11 +291,6 @@
       <Project>{c41c5fac-2246-48f1-8016-24a90c45bf9f}</Project>
       <Name>Yesla.Services</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712061757321_InitialMigration.resx">
-      <DependentUpon>201712061757321_InitialMigration.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
