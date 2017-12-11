@@ -50,87 +50,119 @@ namespace Yesla.Services
             }
 
         }
-                public bool EditTrip()
-                {
-                    throw new NotImplementedException();
-                }
+
+        public TripDetail GetTripById(int tripID)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Trips
+                        .Single(e => e.TripID == tripID);
+
+                return
+                    new TripDetail
+                    {
+                        TripID = entity.TripID,
+                        Price = entity.Price,
+                        TripTime = entity.TripTime,
+                        Origin = entity.Origin,
+                        Destination = entity.Destination,
+                        Hours = entity.Hours,
+                        Minutes = entity.Minutes,
+                        Seats = entity.Seats,
+                        CarID = entity.CarID,
+                        DriverID = entity.DriverID
+
+
+                    };
+            }
+        }
+
+        public bool EditTrip(TripEdit model)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Trips
+                        .Single(e => e.TripID == model.TripID);
+
+
+                entity.Price = model.Price;
+                entity.TripTime = model.TripTime;
+                entity.Origin = model.Origin;
+                entity.Destination = model.Destination;
+                entity.Hours = model.Hours;
+                entity.Minutes = model.Minutes;
+                entity.Seats = model.Seats;
+                entity.CarID = model.CarID;
+                entity.DriverID = model.DriverID;
+
+                return ctx.SaveChanges() == 1;
+            }
+        } 
 
              
+        
 
-                public int ShowTripByID()
-                {
-                    throw new NotImplementedException();
-                }
+        public bool DeleteTrip(int tripID)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Trips
+                        .Single(e => e.TripID == tripID);
 
+                ctx.Trips.Remove(entity);
 
-                //Create the Trip Ticket
-                public bool TripCreate(TripCreate model)
-                {
-                    using (var ctx = new ApplicationDbContext())
-                    {
-                        var entity =
-                            new Trip
-                            {
-
-                                Price = model.Price,
-                                TripTime = model.TripTime,
-                                Origin = model.Origin,
-                                Destination = model.Destination,
-                                Hours = model.Hours,
-                                Minutes = model.Minutes,
-                                Seats = model.Seats,
-                                CarID = model.CarID,
-                                DriverID = model.DriverID
-                            };
-
-                        ctx.Trips.Add(entity);
-
-                        return ctx.SaveChanges() == 1;
-                    }
-                }
+                return ctx.SaveChanges() == 1;
+            }
+        }
 
         IEnumerable<TripCreate> IYeslaService.GetTrips()
         {
             throw new NotImplementedException();
         }
 
+        //Create the Trip Ticket
+        public bool TripCreate(TripCreate model)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    new Trip
+                    {
 
+                        Price = model.Price,
+                        TripTime = model.TripTime,
+                        Origin = model.Origin,
+                        Destination = model.Destination,
+                        Hours = model.Hours,
+                        Minutes = model.Minutes,
+                        Seats = model.Seats,
+                        CarID = model.CarID,
+                        DriverID = model.DriverID
+                    };
 
+                ctx.Trips.Add(entity);
 
+                return ctx.SaveChanges() == 1;
+            }
+        }
 
-        ////    }
+        public bool EditTrip()
+        {
+            throw new NotImplementedException();
+        }
 
-        //////    //List Trip Details
-        //////    public TripDetails GetTripById(int tripID)
-        //////{
-        //////    using (var ctx = new ApplicationDbContext())
-        //////    {
+        public int ShowTripByID()
+        {
+            throw new NotImplementedException();
+        }
 
-
-        //////        var entity =
-        //////            ctx
-        //////                .Trips
-        //////                .Single(e => e.TripID == tripID);
-
-        //////        return
-        //////            new TripDetails
-        //////            {
-
-        //////                Price = entity.Price,
-        //////                TripTime = entity.TripTime,
-        //////                Seats = entity.Seats,
-        //////                Origin = entity.Origin,
-        //////                Destination = entity.Destination,
-        //////                Hours = entity.Hours,
-        //////                Minutes = entity.Minutes,
-        //////                CarID = entity.CarID,
-        //////                DriverID = entity.DriverID
-        //////            };
-
-
-        ////    }
-
-
-    } } 
+    }
+} 
 
 

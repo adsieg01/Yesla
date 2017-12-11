@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace Yesla.Models
 {
-    public class TripDetails
+    class TripModel
     {
-        
+        public int TripID { get; set; }
+
         public int Price { get; set; }
 
         public DateTime TripTime { get; set; }
 
-        public int Seats { get; set; }
-   
         public string Origin { get; set; }
 
         public string Destination { get; set; }
@@ -23,10 +22,10 @@ namespace Yesla.Models
 
         public int Minutes { get; set; }
 
+        public int Seats { get; set; }
+
         public int CarID { get; set; }
 
         public int DriverID { get; set; }
-
-
     }
 }
