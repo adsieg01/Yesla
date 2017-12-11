@@ -12,7 +12,8 @@ namespace Yesla.Data
         [Key]
         public int TripID { get; set; }
 
-        public int CustomerID { get; set; }
+        [Required]
+        public Guid OwnerId { get; set; }
 
         [Required]
         public int DriverID { get; set; }

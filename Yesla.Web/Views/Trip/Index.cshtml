@@ -1,8 +1,19 @@
 ﻿@model IEnumerable<Yesla.Models.TripListItem>
 
+@{
+    ViewBag.Title = "Index";
+}
 
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TripID)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Price)
         </th>
@@ -17,6 +28,9 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TripID)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Price)
         </td>

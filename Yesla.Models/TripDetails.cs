@@ -23,11 +23,9 @@ namespace Yesla.Models
 
         public int Minutes { get; set; }
 
-        public string Model { get; set; }
+        public int CarID { get; set; }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public int DriverID { get; set; }
 
 
     }

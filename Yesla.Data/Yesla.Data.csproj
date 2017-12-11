@@ -61,6 +61,14 @@
     <Compile Include="Migrations\201712061953134_Initial.Designer.cs">
       <DependentUpon>201712061953134_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712071500070_DeleteCustomerFromTrip.cs" />
+    <Compile Include="Migrations\201712071500070_DeleteCustomerFromTrip.Designer.cs">
+      <DependentUpon>201712071500070_DeleteCustomerFromTrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712072004108_AddedGuid.cs" />
+    <Compile Include="Migrations\201712072004108_AddedGuid.Designer.cs">
+      <DependentUpon>201712072004108_AddedGuid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trip.cs" />
@@ -72,6 +80,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712061953134_Initial.resx">
       <DependentUpon>201712061953134_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712071500070_DeleteCustomerFromTrip.resx">
+      <DependentUpon>201712071500070_DeleteCustomerFromTrip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712072004108_AddedGuid.resx">
+      <DependentUpon>201712072004108_AddedGuid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
