@@ -13,6 +13,10 @@ using Yesla.Data;
 
 namespace Yesla.Web.Controllers
 {
+    #if !DEBUG
+		    [RequireHttps]
+    #endif
+
     [Authorize]
     public class AccountController : Controller
     {

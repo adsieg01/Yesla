@@ -36,7 +36,7 @@ namespace Yesla.Web.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            if (!TripCreate().TripCreate(model))
+            if (!TripCreateService().TripCreate(model))
             {
                 ModelState.AddModelError("", "Unable to create ticket");
                 return View(model);
@@ -52,7 +52,7 @@ namespace Yesla.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            var svc = TripCreate();
+            var svc = TripCreateService();
             var model = svc.GetTripById(id);
 
             return View(model);
@@ -62,7 +62,7 @@ namespace Yesla.Web.Controllers
 
         public ActionResult Edit(int id)
         {
-            var service = TripCreate();
+            var service = TripCreateService();
             var detail = service.GetTripById(id);
             var model =
                 new TripEdit
@@ -96,7 +96,7 @@ namespace Yesla.Web.Controllers
                 return View(model);
             }
 
-            var service = TripCreate();
+            var service = TripCreateService();
 
             if (service.EditTrip(model))
             {
@@ -112,7 +112,7 @@ namespace Yesla.Web.Controllers
 
         public ActionResult Delete(int id)
         {
-            var svc = TripCreate();
+            var svc = TripCreateService();
             var model = svc.GetTripById(id);
 
             return View(model);
@@ -123,7 +123,7 @@ namespace Yesla.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int id)
         {
-            var service = TripCreate();
+            var service = TripCreateService();
     
             service.DeleteTrip(id);
 
@@ -133,7 +133,7 @@ namespace Yesla.Web.Controllers
         }
 
         //Create Trips
-        private TripService TripCreate()
+        private TripService TripCreateService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var svc = new TripService(userId);
