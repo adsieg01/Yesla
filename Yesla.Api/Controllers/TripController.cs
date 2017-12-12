@@ -34,19 +34,36 @@ namespace Yesla.Api.Controllers
 
         public IHttpActionResult Post(TripCreate model)
         {
-            return Ok();
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var tripService = new TripService(Guid.Parse(User.Identity.GetUserId()));
+            return Ok(tripService.TripCreate(model));
         }
 
-        public IHttpActionResult Put(TripEdit note)
+        public IHttpActionResult Put(TripEdit model)
         {
-            return Ok();
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var noteService = new TripService(Guid.Parse(User.Identity.GetUserId()));
+            var temp = noteService.GetTripById(model.TripID);
+
+            if (temp == null) return NotFound();
+
+            return Ok(noteService.EditTrip(model));
         }
 
         public IHttpActionResult Delete(int id)
         {
-            return Ok();
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var noteService = new TripService(Guid.Parse(User.Identity.GetUserId()));
+            var temp = noteService.GetTripById(id);
+
+            if (temp == null) return NotFound();
+
+            return Ok(noteService.DeleteTrip(id));
+
         }
 
-       
+
     }
 }
