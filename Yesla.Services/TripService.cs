@@ -109,7 +109,7 @@ namespace Yesla.Services
             }
         }
 
-        //Shows the details of trips
+ 
         public TripDetail GetTripById(int tripID)
         {
             using (var ctx = new ApplicationDbContext())
@@ -138,7 +138,6 @@ namespace Yesla.Services
             }
         }
 
-
         public bool DeleteTrip(int tripID)
         {
             using (var ctx = new ApplicationDbContext())
@@ -153,10 +152,6 @@ namespace Yesla.Services
                 return ctx.SaveChanges() == 1;
             }
         }
-
-
-
-
     }
 } 
 

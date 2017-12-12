@@ -13,8 +13,6 @@ namespace Yesla.Contracts
        bool TripCreate(TripCreate model);
        bool EditTrip(TripEdit model);
        TripDetail GetTripById(int tripID);
-        bool DeleteTrip(int tripID);
-
-
+       bool DeleteTrip(int tripID);
     }
 }
