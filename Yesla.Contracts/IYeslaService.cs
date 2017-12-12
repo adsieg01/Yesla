@@ -9,11 +9,11 @@ namespace Yesla.Contracts
 {
     public interface IYeslaService
     {
-        
-        bool TripCreate(TripCreate model);
-        bool EditTrip();
-        int ShowTripByID();
-        IEnumerable<TripCreate> GetTrips();
+       IEnumerable<TripListItem> GetTrips();
+       bool TripCreate(TripCreate model);
+       bool EditTrip(TripEdit model);
+       TripDetail GetTripByID(int tripID);
+        bool DeleteTrip(int tripID);
 
 
     }
