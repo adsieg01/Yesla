@@ -283,6 +283,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Yesla.Contracts\Yesla.Contracts.csproj">
+      <Project>{585B57D2-EFB1-48ED-ADFB-F33C581F5361}</Project>
+      <Name>Yesla.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Yesla.Data\Yesla.Data.csproj">
       <Project>{5b4708a4-a9a5-451a-ab08-60eea148c772}</Project>
       <Name>Yesla.Data</Name>

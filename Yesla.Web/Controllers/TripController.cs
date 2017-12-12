@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Yesla.Contracts;
 using Yesla.Data;
 using Yesla.Models;
 using Yesla.Services;
@@ -12,24 +13,40 @@ namespace Yesla.Web.Controllers
 {
     [Authorize]
     public class TripController : Controller
-    {   
-        private Guid _userId;
+    {
 
-        //GET: Trip
+        private readonly Lazy<IYeslaService> _tripService;
+
+
+        public TripController()
+        {
+            _tripService = new Lazy<IYeslaService>(TripCreateService);
+        }
+
+        /// <summary>
+        /// Principally used for testing
+        /// </summary>
+        /// <param name="noteService"></param>
+        public TripController(Lazy<IYeslaService> tripService)
+        {
+            _tripService = tripService;
+        }
+
+        // GET: Trips
         public ActionResult Index()
         {
-            var userId = Guid.Parse(User.Identity.GetUserId());
-            var svc = new TripService(userId);
-            var model = svc.GetTrips();
+            var service = _tripService.Value;
+            var model = service.GetTrips();
             return View(model);
         }
 
         public ActionResult Create()
         {
-            var model = new TripCreate();
-            return View(model);
+            return View();
         }
 
+
+        // Create a trip
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(TripCreate model)
@@ -140,5 +157,7 @@ namespace Yesla.Web.Controllers
 
             return svc;
         }
+
+        private Guid _userId;
     }
 }

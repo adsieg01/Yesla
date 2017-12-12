@@ -13,6 +13,7 @@ namespace Yesla.Services
     {
 
         private readonly Guid _userId;
+
         public TripService(Guid userId)
         {
             _userId = userId;
@@ -28,6 +29,12 @@ namespace Yesla.Services
                    .SingleOrDefault(e => e.TripID == tripID);
         }
 
+      
+
+      
+        //Begin COntracts
+
+        // Display Trips on Index
         public IEnumerable<TripListItem> GetTrips()
         {
             using (var ctx = new ApplicationDbContext())
@@ -49,81 +56,6 @@ namespace Yesla.Services
 
             }
 
-        }
-
-        public TripDetail GetTripById(int tripID)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var entity =
-                    ctx
-                        .Trips
-                        .Single(e => e.TripID == tripID);
-
-                return
-                    new TripDetail
-                    {
-                        TripID = entity.TripID,
-                        Price = entity.Price,
-                        TripTime = entity.TripTime,
-                        Origin = entity.Origin,
-                        Destination = entity.Destination,
-                        Hours = entity.Hours,
-                        Minutes = entity.Minutes,
-                        Seats = entity.Seats,
-                        CarID = entity.CarID,
-                        DriverID = entity.DriverID
-
-
-                    };
-            }
-        }
-
-        public bool EditTrip(TripEdit model)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var entity =
-                    ctx
-                        .Trips
-                        .Single(e => e.TripID == model.TripID);
-
-
-                entity.Price = model.Price;
-                entity.TripTime = model.TripTime;
-                entity.Origin = model.Origin;
-                entity.Destination = model.Destination;
-                entity.Hours = model.Hours;
-                entity.Minutes = model.Minutes;
-                entity.Seats = model.Seats;
-                entity.CarID = model.CarID;
-                entity.DriverID = model.DriverID;
-
-                return ctx.SaveChanges() == 1;
-            }
-        } 
-
-             
-        
-
-        public bool DeleteTrip(int tripID)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var entity =
-                    ctx
-                        .Trips
-                        .Single(e => e.TripID == tripID);
-
-                ctx.Trips.Remove(entity);
-
-                return ctx.SaveChanges() == 1;
-            }
-        }
-
-        IEnumerable<TripCreate> IYeslaService.GetTrips()
-        {
-            throw new NotImplementedException();
         }
 
         //Create the Trip Ticket
@@ -152,15 +84,78 @@ namespace Yesla.Services
             }
         }
 
-        public bool EditTrip()
+        //Edit Trips
+        public bool EditTrip(TripEdit model)
         {
-            throw new NotImplementedException();
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Trips
+                        .Single(e => e.TripID == model.TripID);
+
+
+                entity.Price = model.Price;
+                entity.TripTime = model.TripTime;
+                entity.Origin = model.Origin;
+                entity.Destination = model.Destination;
+                entity.Hours = model.Hours;
+                entity.Minutes = model.Minutes;
+                entity.Seats = model.Seats;
+                entity.CarID = model.CarID;
+                entity.DriverID = model.DriverID;
+
+                return ctx.SaveChanges() == 1;
+            }
         }
 
-        public int ShowTripByID()
+        //Shows the details of trips
+        public TripDetail GetTripById(int tripID)
         {
-            throw new NotImplementedException();
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Trips
+                        .Single(e => e.TripID == tripID);
+
+                return
+                    new TripDetail
+                    {
+                        TripID = entity.TripID,
+                        Price = entity.Price,
+                        TripTime = entity.TripTime,
+                        Origin = entity.Origin,
+                        Destination = entity.Destination,
+                        Hours = entity.Hours,
+                        Minutes = entity.Minutes,
+                        Seats = entity.Seats,
+                        CarID = entity.CarID,
+                        DriverID = entity.DriverID
+
+
+                    };
+            }
         }
+
+
+        public bool DeleteTrip(int tripID)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Trips
+                        .Single(e => e.TripID == tripID);
+
+                ctx.Trips.Remove(entity);
+
+                return ctx.SaveChanges() == 1;
+            }
+        }
+
+
+
 
     }
 } 
