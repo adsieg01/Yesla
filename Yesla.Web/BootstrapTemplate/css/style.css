@@ -1,12 +1,32 @@
 /*=== MEDIA QUERY ===*/
 @import url("https://fonts.googleapis.com/css?family=Muli:300,400,600,700,800,900");
 body {
-  line-height: 1.5;
-  font-family: "Muli", sans-serif;
+    line-height: 1.5;
+    font-family: "Muli", sans-serif;
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
 }
 
-navbar-nav ml-auto mt-10 {
-margin-left: 50px;
+/* Wrapper for page content to push down footer */
+.wrap {
+    min-height: 100%;
+    height: auto;
+    /* Negative indent footer by its height */
+    margin: 0 auto -60px;
+    /* Pad bottom by footer height */
+    padding: 0 0 60px;
+}
+
+/* key stuff */
+.video {
+    width: 560px; /* you have to have a size or this method doesn't work */
+    height: 315px; /* think about making these max-width instead - might give you some more responsiveness */
+    position: absolute; /* positions out of the flow, but according to the nearest parent */
+    top: 0;
+    right: 0; /* confuse it i guess */
+    bottom: 0;
+    left: 0;
+    margin: auto; /* make em equal */
 }
 
 p, li, input, select, button {
@@ -639,7 +659,7 @@ ul.pagination .active a {
 }
 
 .bg-1 {
-  background: url("../images/home/hero.jpg");
+  background: url("../images/home/car.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -2417,14 +2437,15 @@ article.single-post p {
 }
 
 .footer-bottom {
-  position: relative;
-  background: #363839;
-  padding: 25px 0;
+    position: relative;
+    background: #363839;
+    height: 60px;
 }
 
 @media (max-width: 480px) {
   .footer-bottom {
     text-align: center;
+    
   }
 }
 

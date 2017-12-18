@@ -211,15 +211,15 @@
     <Content Include="BootstrapTemplate\images\blog\video-icon.png" />
     <Content Include="BootstrapTemplate\images\call-to-action\cta-background.jpg" />
     <Content Include="BootstrapTemplate\images\footer\phone-icon.png" />
-    <Content Include="BootstrapTemplate\images\home\hero.jpg" />
+    <Content Include="BootstrapTemplate\images\home\car.jpg" />
     <Content Include="BootstrapTemplate\images\logo-footer.png" />
     <Content Include="BootstrapTemplate\images\logo.png" />
     <Content Include="BootstrapTemplate\images\nav-toogle-icon.png" />
-    <Content Include="BootstrapTemplate\images\products\products-1.jpg" />
-    <Content Include="BootstrapTemplate\images\products\products-2.jpg" />
-    <Content Include="BootstrapTemplate\images\products\products-3.jpg" />
-    <Content Include="BootstrapTemplate\images\products\products-4.jpg" />
+    <Content Include="BootstrapTemplate\images\products\Chicago.jpg" />
+    <Content Include="BootstrapTemplate\images\products\Cincinnati.jpg" />
+    <Content Include="BootstrapTemplate\images\products\Indianapolis.jpg" />
     <Content Include="BootstrapTemplate\images\user\user-thumb.jpg" />
+    <Content Include="BootstrapTemplate\images\yesla-logo.png" />
     <Content Include="BootstrapTemplate\js\scripts.js" />
     <Content Include="BootstrapTemplate\plugins\bootstrap\dist\css\bootstrap-grid.css" />
     <Content Include="BootstrapTemplate\plugins\bootstrap\dist\css\bootstrap-grid.min.css" />
@@ -423,6 +423,16 @@
     <Content Include="Views\Trip\Details.cshtml" />
     <Content Include="Views\Trip\Edit.cshtml" />
     <Content Include="Views\Trip\Delete.cshtml" />
+    <EmbeddedResource Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\Trip\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Views\Trip\Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Views\Trip\Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
