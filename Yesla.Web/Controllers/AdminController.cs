@@ -5,6 +5,7 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Yesla.Data;
@@ -14,6 +15,7 @@ namespace Yesla.Web.Controllers
 {
     public class AdminController : Controller
     {
+
 
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
@@ -94,6 +96,284 @@ namespace Yesla.Web.Controllers
         }
         #endregion
 
+        // GET: /Admin/Edit/Create 
+        [Authorize(Roles = "Administrator")]
+        #region public ActionResult Create()
+        public ActionResult Create()
+        {
+            var expandedUser = new ExpandedUser();
+
+            ViewBag.Roles = GetAllRolesAsSelectList();
+
+            return View(expandedUser);
+        }
+        #endregion
+
+        // POST: /Admin/Create
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        #region public ActionResult Create(ExpandedUser expUser)
+        public ActionResult Create(ExpandedUser expUser)
+        {
+            try
+            {
+                if (expUser == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                var Email = expUser.Email.Trim();
+                var UserName = expUser.Email.Trim();
+                var Password = expUser.Password.Trim();
+
+                if (Email == "")
+                {
+                    throw new Exception("No Email");
+                }
+
+                if (Password == "")
+                {
+                    throw new Exception("No Password");
+                }
+
+                // UserName is LowerCase of the Email
+                UserName = Email.ToLower();
+
+                // Create user
+                var objNewAdminUser = new ApplicationUser { UserName = UserName, Email = Email };
+                var AdminUserCreateResult = UserManager.Create(objNewAdminUser, Password);
+
+                if (AdminUserCreateResult.Succeeded == true)
+                {
+                    string strNewRole = Convert.ToString(Request.Form["Roles"]);
+
+                    if (strNewRole != "0")
+                    {
+                        // Put user in role
+                        UserManager.AddToRole(objNewAdminUser.Id, strNewRole);
+                    }
+
+                    return Redirect("~/Admin");
+                }
+                else
+                {
+                    ViewBag.Roles = GetAllRolesAsSelectList();
+                    ModelState.AddModelError(string.Empty,
+                        "Error: Failed to create the user. Check password requirements.");
+                    return View(expUser);
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Roles = GetAllRolesAsSelectList();
+                ModelState.AddModelError(string.Empty, "Error: " + ex);
+                return View("Create");
+            }
+        }
+        #endregion
+
+
+        // GET: /Admin/AddRole
+        [Authorize(Roles = "Administrator")]
+        #region public ActionResult AddRole()
+        public ActionResult AddRole()
+        {
+            var role = new Role();
+
+            return View(role);
+        }
+        #endregion
+
+        // POST: /Admin/AddRole
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        #region public ActionResult AddRole(Role role)
+        public ActionResult AddRole(Role role)
+        {
+            try
+            {
+                if (role == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                var roleName = role.RoleName.Trim();
+
+                if (roleName == "")
+                {
+                    throw new Exception("No RoleName");
+                }
+
+                // Create Role
+                var roleManager =
+                    new RoleManager<IdentityRole>(
+                        new RoleStore<IdentityRole>(new ApplicationDbContext())
+                        );
+
+                if (!roleManager.RoleExists(roleName))
+                {
+                    roleManager.Create(new IdentityRole(roleName));
+                }
+
+                return Redirect("~/Admin/ViewAllRoles");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error: " + ex);
+                return View("AddRole");
+            }
+        }
+        #endregion
+
+        // GET: /Admin/EditRoles
+        [Authorize(Roles = "Administrator")]
+        #region ActionResult EditRoles(string username)
+        public ActionResult EditRoles(string username)
+        {
+            if (username == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            username = username.ToLower();
+
+            ExpandedUser expUser = GetUser(username);
+
+            if (expUser == null)
+            {
+                return HttpNotFound();
+            }
+
+            var userAndRoles = GetUserAndRoles(username);
+            return View(userAndRoles);
+        }
+        #endregion
+
+        // POST: /Admin/EditRoles
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        #region public ActionResult EditRoles(UserAndRoles userAndRoles)
+        public ActionResult EditRoles(UserAndRoles userAndRoles)
+        {
+            try
+            {
+                if (userAndRoles == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                string UserName = userAndRoles.UserName;
+                string strNewRole = Convert.ToString(Request.Form["AddRole"]);
+
+                if (strNewRole != "No Roles Found")
+                {
+                    // Go get the User
+                    ApplicationUser user = UserManager.FindByName(UserName);
+
+                    // Put user in role
+                    UserManager.AddToRole(user.Id, strNewRole);
+                }
+
+                ViewBag.AddRole = new SelectList(RolesUserIsNotIn(UserName));
+
+                var userAndRolesObject = GetUserAndRoles(UserName);
+
+                return View(userAndRolesObject);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error: " + ex);
+                return View("EditRoles");
+            }
+        }
+        #endregion
+
+        // GET: /Admin/Edit/User 
+        [Authorize(Roles = "Administrator")]
+        #region public ActionResult EditUser(string username)
+        public ActionResult EditUser(string username)
+        {
+            if (username == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ExpandedUser expUser = GetUser(username);
+            if (expUser == null)
+            {
+                return HttpNotFound();
+            }
+            return View(expUser);
+        }
+        #endregion
+
+        // POST: /Admin/User
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        #region public ActionResult EditUser(ExpandedUser paramExpandedUserDTO)
+        public ActionResult EditUser(ExpandedUser expUser)
+        {
+            try
+            {
+                if (expUser == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                ExpandedUser objExpandedUser = UpdateUser(expUser);
+
+                if (objExpandedUser == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return Redirect("~/Admin");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error: " + ex);
+                return View("EditUser", GetUser(expUser.UserName));
+            }
+        }
+        #endregion
+
+
+
+
+        //Utility
+        #region public ApplicationUserManager UserManager
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ??
+                    HttpContext.GetOwinContext()
+                    .GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+        #endregion
+        #region public ApplicationRoleManager RoleManager
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ??
+                    HttpContext.GetOwinContext()
+                    .GetUserManager<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+        #endregion
+
         // GET: /Admin/ViewAllRoles
         [Authorize(Roles = "Administrator")]
         #region public ActionResult ViewAllRoles()
@@ -117,20 +397,150 @@ namespace Yesla.Web.Controllers
 
         #endregion
 
-        //Utility
-        #region public ApplicationUserManager UserManager
-        public ApplicationUserManager UserManager
+        #region private List<SelectListItem> GetAllRolesAsSelectList()
+        private List<SelectListItem> GetAllRolesAsSelectList()
         {
-            get
+            List<SelectListItem> RoleList =
+                new List<SelectListItem>();
+
+            var roleManager =
+                new RoleManager<IdentityRole>(
+                    new RoleStore<IdentityRole>(new ApplicationDbContext()));
+
+            var roleList = roleManager.Roles.OrderBy(x => x.Name).ToList();
+
+            RoleList.Add(
+                new SelectListItem
+                {
+                    Text = "Select",
+                    Value = "0"
+                });
+
+            foreach (var item in roleList)
             {
-                return _userManager ??
-                    HttpContext.GetOwinContext()
-                    .GetUserManager<ApplicationUserManager>();
+                RoleList.Add(
+                    new SelectListItem
+                    {
+                        Text = item.Name.ToString(),
+                        Value = item.Name.ToString()
+                    });
             }
-            private set
+            return RoleList;
+        }
+        #endregion
+
+        #region private ExpandedUser GetUser(string username)
+        private ExpandedUser GetUser(string username)
+        {
+            var expUser = new ExpandedUser();
+
+            var result = UserManager.FindByName(username);
+
+            // If we could not find the user, throw an exception
+            if (result == null) throw new Exception("Could not find the User");
+
+            expUser.UserName = result.UserName;
+            expUser.Email = result.Email;
+            expUser.LockoutEndDateUtc = result.LockoutEndDateUtc;
+            expUser.AccessFailedCount = result.AccessFailedCount;
+            expUser.PhoneNumber = result.PhoneNumber;
+
+            return expUser;
+        }
+        #endregion
+
+        #region private UserAndRoles GetUserAndRoles(string username)
+        private UserAndRoles GetUserAndRoles(string username)
+        {
+            // Go get the User
+            ApplicationUser user = UserManager.FindByName(username);
+            List<UserRole> userRole =
+                (from role in UserManager.GetRoles(user.Id)
+                 select new UserRole
+                 {
+                     RoleName = role,
+                     UserName = username
+                 }).ToList();
+
+            if (userRole.Count() == 0)
             {
-                _userManager = value;
+                userRole.Add(new UserRole { RoleName = "No Roles Found" });
             }
+
+            ViewBag.AddRole = new SelectList(RolesUserIsNotIn(username));
+
+            // Create UserRolesAndPermissions
+            var userAndRoles = new UserAndRoles();
+            userAndRoles.UserName = username;
+            userAndRoles.UserRole = userRole;
+            return userAndRoles;
+        }
+        #endregion
+
+        #region private List<string> RolesUserIsNotIn(string username)
+        private List<string> RolesUserIsNotIn(string username)
+        {
+            var allRoles = RoleManager.Roles.Select(x => x.Name).ToList();
+
+            // Go get the roles for an individual
+            var user = UserManager.FindByName(username);
+
+            if (user == null)
+            {
+                throw new Exception("Could not find the User");
+            }
+
+            var rolesForUser = UserManager.GetRoles(user.Id).ToList();
+            var rolesUserNotIn = (from role in allRoles
+                                  where !rolesForUser.Contains(role)
+                                  select role).ToList();
+
+            if (rolesUserNotIn.Count() == 0)
+            {
+                rolesUserNotIn.Add("No Roles Found");
+            }
+            return rolesUserNotIn;
+        }
+        #endregion
+
+        #region private ExpandedUser UpdateUser(ExpandedUser expUser)
+        private ExpandedUser UpdateUser(ExpandedUser expUser)
+        {
+            ApplicationUser result = UserManager.FindByName(expUser.UserName);
+
+            if (result == null)
+            {
+                throw new Exception("Could not find the User");
+            }
+
+            result.Email = expUser.Email;
+
+            if (UserManager.IsLockedOut(result.Id))
+            {
+                UserManager.ResetAccessFailedCountAsync(result.Id);
+            }
+
+            UserManager.Update(result);
+
+            if (!string.IsNullOrEmpty(expUser.Password))
+            {
+                var removePassword = UserManager.RemovePassword(result.Id);
+                if (removePassword.Succeeded)
+                {
+                    var AddPassword =
+                        UserManager.AddPassword(
+                            result.Id,
+                            expUser.Password
+                            );
+
+                    if (AddPassword.Errors.Count() > 0)
+                    {
+                        throw new Exception(AddPassword.Errors.FirstOrDefault());
+                    }
+                }
+            }
+
+            return expUser;
         }
         #endregion
     }
