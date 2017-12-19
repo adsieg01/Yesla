@@ -61,12 +61,17 @@
                                 </li>
                             </ul>
                             <ul class="navbar-nav ml-auto mt-10">
+                                @if (User.IsInRole("Administrator"))
+                                {
+                                    <li class="nav-item">
+                                @Html.ActionLink("Administration", "Index", "Admin", null, new { @class = "nav-link login-button" })</li>
+                                }
                                 <li class="nav-item">
                                     <a class="nav-link login-button" href="~/Account/login">Login</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link add-button" href="~/Account/register"><i class="fa fa-plus-circle"></i> Register</a>
-                                </li>
+                                </li>     
                             </ul>
                         </div>
                     </nav>
