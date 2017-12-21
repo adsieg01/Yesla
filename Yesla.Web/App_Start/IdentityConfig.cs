@@ -120,5 +120,8 @@ namespace Yesla.Web
             var roleStore = new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>());
             return new ApplicationRoleManager(roleStore);
         }
-    }   
+    }
+
+  
+
 }

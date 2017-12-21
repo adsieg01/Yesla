@@ -1,0 +1,27 @@
+﻿
+
+@using (Html.BeginForm())
+{
+    
+    @Html.AntiForgeryToken()
+       <form action="/Stripe/Charge" method="POST">
+    <article>
+        <label>Amount: $55.00</label>
+        <br/>
+
+        <p>One way from Indianapolis to Cincinatti</p>
+    </article>
+    <script src="https://checkout.stripe.com/v2/checkout.js"
+            class="stripe-button"
+            data-key="pk_test_PVMsGrYmkBJ6fTELDJ1zyck7"
+            data-locale="auto"
+            data-description="Purchase Ticket"
+            data-amount="5500">
+    </script>
+</form>}
+    
+
+
+
+
+

@@ -55,9 +55,11 @@ namespace Yesla.Data
                 .Configurations
                 .Add(new IdentityUserLoginConfiguration())
                 .Add(new IdentityUserRoleConfiguration());
+            modelBuilder.Entity<IdentityUserRole>().HasKey(hk => new { hk.UserId, hk.RoleId});
+
         }
 
-        
+
     }
     public class IdentityUserLoginConfiguration
         : EntityTypeConfiguration<IdentityUserLogin>

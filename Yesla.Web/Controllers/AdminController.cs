@@ -273,7 +273,7 @@ namespace Yesla.Web.Controllers
                     ApplicationUser user = UserManager.FindByName(UserName);
 
                     // Put user in role
-                    UserManager.AddToRole(user.Id, strNewRole);
+                    UserManager.AddToRole(user.Id, "Standard User");
                 }
 
                 ViewBag.AddRole = new SelectList(RolesUserIsNotIn(UserName));
@@ -312,7 +312,7 @@ namespace Yesla.Web.Controllers
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        #region public ActionResult EditUser(ExpandedUser paramExpandedUserDTO)
+        #region public ActionResult EditUser(ExpandedUser paramExpandedUser)
         public ActionResult EditUser(ExpandedUser expUser)
         {
             try
@@ -339,7 +339,41 @@ namespace Yesla.Web.Controllers
         }
         #endregion
 
-
+        // DELETE: /Admin/DeleteUser
+        [Authorize(Roles = "Administrator")]
+        #region public ActionResult DeleteUser(string UserName)
+        public ActionResult DeleteUser(string UserName)
+        {
+            try
+            {
+                if (UserName == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if (UserName.ToLower() == this.User.Identity.Name.ToLower())
+                {
+                    ModelState.AddModelError(
+                        string.Empty, "Error: Cannot delete the current user");
+                    return View("EditUser");
+                }
+                ExpandedUser objExpandedUser = GetUser(UserName);
+                if (objExpandedUser == null)
+                {
+                    return HttpNotFound();
+                }
+                else
+                {
+                    DeleteUser(objExpandedUser);
+                }
+                return Redirect("~/Admin");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error: " + ex);
+                return View("EditUser", GetUser(UserName));
+            }
+        }
+        #endregion
 
 
         //Utility
@@ -541,6 +575,62 @@ namespace Yesla.Web.Controllers
             }
 
             return expUser;
+        }
+        #endregion
+
+        #region private ExpandedUser UpdateDTOUser(ExpandedUser objExpandedUser)
+        private ExpandedUser UpdateDTOUser(ExpandedUser paramExpandedUser)
+        {
+            ApplicationUser result =
+                UserManager.FindByName(paramExpandedUser.UserName);
+            // If we could not find the user, throw an exception
+            if (result == null)
+            {
+                throw new Exception("Could not find the User");
+            }
+            result.Email = paramExpandedUser.Email;
+            // Lets check if the account needs to be unlocked
+            if (UserManager.IsLockedOut(result.Id))
+            {
+                // Unlock user
+                UserManager.ResetAccessFailedCountAsync(result.Id);
+            }
+            UserManager.Update(result);
+            // Was a password sent across?
+            if (!string.IsNullOrEmpty(paramExpandedUser.Password))
+            {
+                // Remove current password
+                var removePassword = UserManager.RemovePassword(result.Id);
+                if (removePassword.Succeeded)
+                {
+                    // Add new password
+                    var AddPassword =
+                        UserManager.AddPassword(
+                            result.Id,
+                            paramExpandedUser.Password
+                            );
+                    if (AddPassword.Errors.Count() > 0)
+                    {
+                        throw new Exception(AddPassword.Errors.FirstOrDefault());
+                    }
+                }
+            }
+            return paramExpandedUser;
+        }
+        #endregion
+        #region private void DeleteUser(ExpandedUser paramExpandedUser)
+        private void DeleteUser(ExpandedUser paramExpandedUser)
+        {
+            ApplicationUser user =
+                UserManager.FindByName(paramExpandedUser.UserName);
+            // If we could not find the user, throw an exception
+            if (user == null)
+            {
+                throw new Exception("Could not find the User");
+            }
+            UserManager.RemoveFromRoles(user.Id, UserManager.GetRoles(user.Id).ToArray());
+            UserManager.Update(user);
+            UserManager.Delete(user);
         }
         #endregion
     }

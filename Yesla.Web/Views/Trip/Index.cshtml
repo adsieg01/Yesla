@@ -5,10 +5,12 @@
 }
 
 <h2>Index</h2>
-
+@if (User.IsInRole("Administrator"))
+{
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+}
 
 @if (TempData.ContainsKey("SaveResult"))
 {
@@ -52,9 +54,15 @@
             @Html.DisplayFor(modelItem => item.Destination)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.TripID}) |
-            @Html.ActionLink("Details", "Details", new { id = item.TripID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.TripID })
+@if (User.IsInRole("Administrator")) {
+            @Html.ActionLink("Edit", "Edit", new { id = item.TripID }, new { @class = "login-button" }) 
+            @Html.ActionLink("Delete", "Delete", new { id = item.TripID }, new { @class = "login-button" })
+            @Html.ActionLink("Details", "Details", new { id = item.TripID }, new { @class = "login-button" })
+}
+else
+{
+            @Html.ActionLink("Details", "Details", new { id = item.TripID }, new { @class = "login-button" })
+            @Html.ActionLink("Purchase", "Index", "Stripe", null, new { @class = "add-button" })}
         </td>
     </tr>
 }
