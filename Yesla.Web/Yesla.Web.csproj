@@ -217,6 +217,11 @@
     <Compile Include="Models\UserRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="YeslaDBDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>YeslaDBDataSet.xsd</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="BootstrapTemplate\css\style.css" />
@@ -389,6 +394,7 @@
     <Content Include="BootstrapTemplate\plugins\slick-carousel\slick\slick.less" />
     <Content Include="BootstrapTemplate\plugins\slick-carousel\slick\slick.scss" />
     <Content Include="BootstrapTemplate\plugins\jquery-ui\package.json" />
+    <None Include="Properties\PublishProfiles\Yesla - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -468,6 +474,17 @@
     <None Include="Views\Trip\Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="YeslaDBDataSet.xsc">
+      <DependentUpon>YeslaDBDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="YeslaDBDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>YeslaDBDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="YeslaDBDataSet.xss">
+      <DependentUpon>YeslaDBDataSet.xsd</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
