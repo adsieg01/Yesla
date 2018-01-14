@@ -63,6 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChargeViewModel.cs" />
+    <Compile Include="OneTimePurchaseViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TripCreate.cs" />
     <Compile Include="TripDetail.cs" />

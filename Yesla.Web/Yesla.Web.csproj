@@ -213,7 +213,6 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\StripeView.cs" />
     <Compile Include="Models\UserRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -457,11 +456,11 @@
     <Content Include="Views\Admin\AddRole.cshtml" />
     <Content Include="Views\Admin\EditUser.cshtml" />
     <Content Include="Views\Admin\EditRoles.cshtml" />
-    <Content Include="Views\Stripe\Index.cshtml" />
-    <Content Include="Views\Stripe\Confirmation.cshtml" />
     <Content Include="Views\Stripe\Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\Stripe\Index.cshtml" />
+    <Content Include="Views\Stripe\Confirmation.cshtml" />
     <None Include="Views\Stripe\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

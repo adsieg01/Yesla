@@ -1,27 +1,50 @@
-﻿
+﻿@model Yesla.Models.OneTimePurchaseViewModel
 
-@using (Html.BeginForm())
-{
-    
-    @Html.AntiForgeryToken()
-       <form action="/Stripe/Charge" method="POST">
-    <article>
-        <label>Amount: $55.00</label>
-        <br/>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-        <p>One way from Indianapolis to Cincinatti</p>
-    </article>
-    <script src="https://checkout.stripe.com/v2/checkout.js"
-            class="stripe-button"
-            data-key="pk_test_PVMsGrYmkBJ6fTELDJ1zyck7"
-            data-locale="auto"
-            data-description="Purchase Ticket"
-            data-amount="5500">
-    </script>
-</form>}
-    
+<h2>ElevenNote Lifetime Membership</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <h4 class="text-center"><span class="label label-info">Join now!!!</span></h4>
+                @*<img src="~/Content/images/book.png" />*@
+                <div class="caption">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <h3>Become a Member Forever!!!!</h3>
+                        </div>
+                        <div class="col-md-6 col-xs-6 price">
+                            <h3>
+                                <label>$99</label>
+                            </h3>
+                        </div>
+                    </div>
+                    <p>You'll never need another NoteService!!!</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            @using (Html.BeginForm("Charge", "Stripe", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                        data-key="@Model.StripePublishableKey"
+                                        data-amount="9900">
+                                </script>
+                            }
+                        </div>
+                    </div>
+
+                    <p> </p>
+                </div>
+            </div>
+        </div>
 
 
+    </div>
 
-
+</div>
 

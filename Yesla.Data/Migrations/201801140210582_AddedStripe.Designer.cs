@@ -7,13 +7,13 @@ namespace Yesla.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class DBcreate : IMigrationMetadata
+    public sealed partial class AddedStripe : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DBcreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedStripe));
         
         string IMigrationMetadata.Id
         {
-            get { return "201712211626593_DBcreate"; }
+            get { return "201801140210582_AddedStripe"; }
         }
         
         string IMigrationMetadata.Source

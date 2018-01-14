@@ -7,17 +7,45 @@ using System.Web.Mvc;
 using Stripe;
 using Yesla.Web.Models;
 using System.Diagnostics;
+using Yesla.Models;
 
 namespace Yesla.Web.Controllers
 {
     [Authorize]
     public class StripeController : Controller
     {
-        // embedded form
+        // GET: OneTimePurchase
         public ActionResult Index()
         {
-            var stripePublishKey = ConfigurationManager.AppSettings["pk_test_PVMsGrYmkBJ6fTELDJ1zyck7"];
-            ViewBag.StripePublishKey = stripePublishKey;
+            string stripePublishableKey = ConfigurationManager.AppSettings["stripePublishableKey"];
+            var model = new OneTimePurchaseViewModel { StripePublishableKey = stripePublishableKey };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken()]
+        public ActionResult Charge(ChargeViewModel chargeViewModel)
+        {
+            StripeConfiguration.SetApiKey("sk_test_G7sjp9f5VyK5ogExpiwfo8ZO");
+            Debug.WriteLine(chargeViewModel.StripeEmail);
+            Debug.WriteLine(chargeViewModel.StripeToken);
+
+            var token = chargeViewModel.StripeToken; // Using ASP.NET MVC
+
+            var charges = new StripeChargeService();
+            var charge = charges.Create(new StripeChargeCreateOptions
+            {
+                Amount = 1000,
+                Currency = "usd",
+                Description = "Example charge",
+                SourceTokenOrExistingSourceId = token
+            });
+
+            return RedirectToAction("Confirmation");
+        }
+
+        public ActionResult Confirmation()
+        {
             return View();
         }
     }
