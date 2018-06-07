@@ -1,0 +1,50 @@
+﻿@model Yesla.Models.OneTimePurchaseViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Almost There!</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <h4 class="text-center"><span class="label label-info"></span></h4>
+                
+                <div class="caption">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <h3>Book Your Ticket</h3>
+                        </div>
+                        <div class="col-md-6 col-xs-6 price">
+                            <h3>
+                                <label>Secure Payment Via Stripe</label>
+                            </h3>
+                        </div>
+                    </div>
+                    <p></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            @using (Html.BeginForm("Charge", "Stripe", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                        data-key="@Model.StripePublishableKey"
+                                        data-amount="6500">
+                                </script>
+                            }
+                        </div>
+                    </div>
+
+                    <p> </p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+

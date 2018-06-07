@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Yesla.Models.TripListItem>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@if (User.IsInRole("Administrator"))
+{
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+}
+
+@if (TempData.ContainsKey("SaveResult"))
+{
+    <div class="alert alert-success fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+        @TempData["SaveResult"]
+    </div>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TripID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Origin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Destination)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TripID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Origin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Destination)
+        </td>
+        <td>
+@if (User.IsInRole("Administrator")) {
+            @Html.ActionLink("Edit", "Edit", new { id = item.TripID }, new { @class = "login-button" }) 
+            @Html.ActionLink("Delete", "Delete", new { id = item.TripID }, new { @class = "login-button" })
+            @Html.ActionLink("Details", "Details", new { id = item.TripID }, new { @class = "login-button" })
+}
+else
+{
+            @Html.ActionLink("Details", "Details", new { id = item.TripID }, new { @class = "login-button" })
+            @Html.ActionLink("Purchase", "Index", "Stripe", null, new { @class = "add-button" })}
+        </td>
+    </tr>
+}
+
+</table>

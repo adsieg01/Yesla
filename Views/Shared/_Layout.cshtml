@@ -1,0 +1,142 @@
+﻿@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   @Scripts.Render("~/bundles/jquery")
+    <!-- SITE TITTLE -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yesla</title>
+
+    <!-- PLUGINS CSS STYLE -->
+    <link href="~/BootstrapTemplate/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="~/bootstraptemplate/plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="~/BootstrapTemplate/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Owl Carousel -->
+    <link href="~/BootstrapTemplate/plugins/slick-carousel/slick/slick.css" rel="stylesheet">
+    <link href="~/BootstrapTemplate/plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
+    <!-- Fancy Box -->
+    <link href="~/BootstrapTemplate/plugins/fancybox/jquery.fancybox.pack.css" rel="stylesheet">
+    <link href="~/BootstrapTemplate/plugins/jquery-nice-select/css/nice-select.css" rel="stylesheet">
+    <link href="plugins/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
+    <!-- CUSTOM CSS -->
+    <link href="~/BootstrapTemplate/css/style.css" rel="stylesheet">
+    
+    <!-- FAVICON -->
+    <link href="BootstrapTemplate/images/favicon.png" rel="shortcut icon">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="body-wrapper">
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <nav class="navbar navbar-expand-lg  navigation">
+                        <a class="navbar-brand" href="~/Home/index">
+                            <img src="~/BootstrapTemplate/images/yesla-logo.png" alt="">
+                        </a>
+                            <span class="navbar-toggler-icon"></span>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ml-auto main-nav ">
+                                
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="~/Home/index">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="dashboard.html">Services</a>
+                                </li>
+                                <li class="nav-item dropdown dropdown-slide">
+                                    <a class="nav-link dropdown-toggle" href="#" aria-haspopup="true" aria-expanded="false">
+                                        FAQ </a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav ml-auto mt-10">
+                                @if (User.IsInRole("Administrator"))
+                                {
+                                    <li class="nav-item">
+                                @Html.ActionLink("Administration", "Index", "Admin", null, new { @class = "nav-link login-button" })</li>
+                                }
+                                @if (Request.IsAuthenticated)
+                                {
+                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+
+
+                                            <li class="nav-item">
+                                                <a class="nav-link login-button" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                                            </li>
+
+                                    }
+                                    <li class="nav-item">
+                                        <a class="nav-link login-button" href="~/Manage">Manage</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link add-button" href="~/Trip/Index"><i class="fa fa-plus-circle"></i> Trip Manager</a>
+                                    </li>
+
+                                }
+                              
+
+                                
+                                else
+                                {
+                                <li class="nav-item">
+                                    <a class="nav-link login-button" href="~/Account/login">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link add-button" href="~/Account/register"><i class="fa fa-plus-circle"></i> Register</a>
+                                </li>
+
+                                }
+
+
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    @RenderBody()
+    @RenderSection("Scripts", required: false)
+
+    <!--============================
+    =            Footer            =
+    =============================-->
+
+  
+   
+
+    <!-- JAVASCRIPTS -->
+    <script src="~/BootstrapTemplate/plugins/jquery/dist/jquery.min.js"></script>
+    <script src="~/BootstrapTemplate/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/BootstrapTemplate/plugins/tether/js/tether.min.js"></script>
+    <script src="~/BootstrapTemplate/plugins/raty/jquery.raty-fa.js"></script>
+    <script src="~/BootstrapTemplate/plugins/bootstrap/dist/js/popper.min.js"></script>
+    <script src="~/BootstrapTemplate/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/BootstrapTemplate/plugins/slick-carousel/slick/slick.min.js"></script>
+    <script src="~/BootstrapTemplate/plugins/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+    <script src="~/BootstrapTemplate/plugins/fancybox/jquery.fancybox.pack.js"></script>
+    <script src="~/BootstrapTemplate/plugins/smoothscroll/SmoothScroll.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+
+</body>
+
+</html>
