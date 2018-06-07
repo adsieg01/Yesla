@@ -5,26 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ElevenNote Lifetime Membership</h2>
+<h2>Almost There!</h2>
 
 <div class="row">
     <div class="col-md-12">
         <div class="col-sm-6 col-md-4">
             <div class="thumbnail">
-                <h4 class="text-center"><span class="label label-info">Join now!!!</span></h4>
-                @*<img src="~/Content/images/book.png" />*@
+                <h4 class="text-center"><span class="label label-info"></span></h4>
+                
                 <div class="caption">
                     <div class="row">
                         <div class="col-md-6 col-xs-6">
-                            <h3>Become a Member Forever!!!!</h3>
+                            <h3>Book Your Ticket</h3>
                         </div>
                         <div class="col-md-6 col-xs-6 price">
                             <h3>
-                                <label>$99</label>
+                                <label>Secure Payment Via Stripe</label>
                             </h3>
                         </div>
                     </div>
-                    <p>You'll never need another NoteService!!!</p>
+                    <p></p>
                     <div class="row">
                         <div class="col-md-6">
                             @using (Html.BeginForm("Charge", "Stripe", FormMethod.Post))
@@ -32,7 +32,7 @@
                                 @Html.AntiForgeryToken()
                                 <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                         data-key="@Model.StripePublishableKey"
-                                        data-amount="9900">
+                                        data-amount="6500">
                                 </script>
                             }
                         </div>

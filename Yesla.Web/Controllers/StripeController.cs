@@ -35,9 +35,9 @@ namespace Yesla.Web.Controllers
             var charges = new StripeChargeService();
             var charge = charges.Create(new StripeChargeCreateOptions
             {
-                Amount = 1000,
+                Amount = 6500,
                 Currency = "usd",
-                Description = "Example charge",
+                Description = "Credit Card",
                 SourceTokenOrExistingSourceId = token
             });
 
